@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Session1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Resource">
+    <Key>
+      <PropertyRef Name="resId" />
+    </Key>
+    <Property Name="resId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="resName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="resTypeIdFK" Type="Int32" Nullable="false" />
+    <Property Name="remainingQuantity" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Resource_Allocation" Relationship="Self.FK_Resource_Allocation_Resource" FromRole="Resource" ToRole="Resource_Allocation" />
+    <NavigationProperty Name="Resource_Type" Relationship="Self.FK_Resource_Resource_Type" FromRole="Resource" ToRole="Resource_Type" />
+  </EntityType>
+  <EntityType Name="Resource_Allocation">
+    <Key>
+      <PropertyRef Name="allocId" />
+    </Key>
+    <Property Name="allocId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="resIdFK" Type="Int32" Nullable="false" />
+    <Property Name="skillIdFK" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Resource" Relationship="Self.FK_Resource_Allocation_Resource" FromRole="Resource_Allocation" ToRole="Resource" />
+    <NavigationProperty Name="Skill" Relationship="Self.FK_Resource_Allocation_Skill1" FromRole="Resource_Allocation" ToRole="Skill" />
+  </EntityType>
+  <EntityType Name="Resource_Type">
+    <Key>
+      <PropertyRef Name="resTypeId" />
+    </Key>
+    <Property Name="resTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="resTypeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Resources" Relationship="Self.FK_Resource_Resource_Type" FromRole="Resource_Type" ToRole="Resource" />
+  </EntityType>
+  <EntityType Name="Skill">
+    <Key>
+      <PropertyRef Name="skillId" />
+    </Key>
+    <Property Name="skillId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="skillName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Resource_Allocation" Relationship="Self.FK_Resource_Allocation_Skill1" FromRole="Skill" ToRole="Resource_Allocation" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="userPw" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="userTypeIdFK" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User_Type" Relationship="Self.FK_User_User_Type" FromRole="User" ToRole="User_Type" />
+  </EntityType>
+  <EntityType Name="User_Type">
+    <Key>
+      <PropertyRef Name="userTypeId" />
+    </Key>
+    <Property Name="userTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_User_User_Type" FromRole="User_Type" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Resource_Allocation_Resource">
+    <End Role="Resource" Type="Self.Resource" Multiplicity="1" />
+    <End Role="Resource_Allocation" Type="Self.Resource_Allocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Resource">
+        <PropertyRef Name="resId" />
+      </Principal>
+      <Dependent Role="Resource_Allocation">
+        <PropertyRef Name="resIdFK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Resource_Resource_Type">
+    <End Role="Resource_Type" Type="Self.Resource_Type" Multiplicity="1" />
+    <End Role="Resource" Type="Self.Resource" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Resource_Type">
+        <PropertyRef Name="resTypeId" />
+      </Principal>
+      <Dependent Role="Resource">
+        <PropertyRef Name="resTypeIdFK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Resource_Allocation_Skill1">
+    <End Role="Skill" Type="Self.Skill" Multiplicity="1" />
+    <End Role="Resource_Allocation" Type="Self.Resource_Allocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Skill">
+        <PropertyRef Name="skillId" />
+      </Principal>
+      <Dependent Role="Resource_Allocation">
+        <PropertyRef Name="skillIdFK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_User_Type">
+    <End Role="User_Type" Type="Self.User_Type" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User_Type">
+        <PropertyRef Name="userTypeId" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="userTypeIdFK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Session1Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Resources" EntityType="Self.Resource" />
+    <EntitySet Name="Resource_Allocation" EntityType="Self.Resource_Allocation" />
+    <EntitySet Name="Resource_Type" EntityType="Self.Resource_Type" />
+    <EntitySet Name="Skills" EntityType="Self.Skill" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="User_Type" EntityType="Self.User_Type" />
+    <AssociationSet Name="FK_Resource_Allocation_Resource" Association="Self.FK_Resource_Allocation_Resource">
+      <End Role="Resource" EntitySet="Resources" />
+      <End Role="Resource_Allocation" EntitySet="Resource_Allocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Resource_Resource_Type" Association="Self.FK_Resource_Resource_Type">
+      <End Role="Resource_Type" EntitySet="Resource_Type" />
+      <End Role="Resource" EntitySet="Resources" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Resource_Allocation_Skill1" Association="Self.FK_Resource_Allocation_Skill1">
+      <End Role="Skill" EntitySet="Skills" />
+      <End Role="Resource_Allocation" EntitySet="Resource_Allocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_User_Type" Association="Self.FK_User_User_Type">
+      <End Role="User_Type" EntitySet="User_Type" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Session1Model.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Session1Model.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>
