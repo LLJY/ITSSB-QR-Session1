@@ -50,16 +50,20 @@ namespace Session1
                                       select u).ToList();
                         if(query1.Count == 0)
                         {
-                            var user = new User()
+                            //check if userid is equal to 8 chars or more.
+                            if (user_id_box.Text.Length >= 8)
                             {
-                                userId = user_id_box.Text,
-                                userName = username_box.Text,
-                                userPw = password_again_box.Text,
-                                userTypeIdFK = (from t in db.User_Type where t.userTypeName == usertype_combo.SelectedItem.ToString() select t.userTypeId).First()
-                            };
-                            db.Users.Add(user);
-                            await db.SaveChangesAsync();
-                            MessageBox.Show("Added User!");
+                                var user = new User()
+                                {
+                                    userId = user_id_box.Text,
+                                    userName = username_box.Text,
+                                    userPw = password_again_box.Text,
+                                    userTypeIdFK = (from t in db.User_Type where t.userTypeName == usertype_combo.SelectedItem.ToString() select t.userTypeId).First()
+                                };
+                                db.Users.Add(user);
+                                await db.SaveChangesAsync();
+                                MessageBox.Show("Added User!");
+                            }
                         }
                         else
                         {
