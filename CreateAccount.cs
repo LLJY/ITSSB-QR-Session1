@@ -15,7 +15,7 @@ namespace Session1
         public CreateAccount()
         {
             InitializeComponent();
-            using(var db = new Session1Entities())
+            using(var db = new Session1Entities1())
             {
                 usertype_combo.DataSource = (from t in db.User_Type select t.userTypeName).ToList();
             }
@@ -39,7 +39,7 @@ namespace Session1
                 if(password_box.Text == password_again_box.Text)
                 {
                     //check if user id exists in db
-                    using(var db = new Session1Entities())
+                    using(var db = new Session1Entities1())
                     {
                         var query1 = (from u in db.Users
                                       where u.userId == user_id_box.Text

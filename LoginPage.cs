@@ -22,7 +22,7 @@ namespace Session1
             //check if fields are filled
             if(!(string.IsNullOrEmpty(user_id_box.Text) && string.IsNullOrEmpty(password_box.Text))){
                 //verify username and password
-                using(var db = new Session1Entities())
+                using(var db = new Session1Entities1())
                 {
                     var user = (from u in db.Users
                                where u.userId == user_id_box.Text

@@ -36,7 +36,7 @@ namespace Session1
         public async Task<List<ResourceManagement>> GetResources(string typefilter = null)
         {
             var returnlist = new List<ResourceManagement>();
-            using (var db = new Session1Entities())
+            using (var db = new Session1Entities1())
             {
                 var resources = (from r in db.Resources
                                  join rt in db.Resource_Type on r.resTypeIdFK equals rt.resTypeId
@@ -87,7 +87,7 @@ namespace Session1
         }
         public async Task<List<string>> getType()
         {
-            using(var db = new Session1Entities())
+            using(var db = new Session1Entities1())
             {
                 return (from s in db.Resource_Type
                         select s.resTypeName).ToList();
@@ -95,7 +95,7 @@ namespace Session1
         }
         public async Task<List<string>> getSkills()
         {
-            using (var db = new Session1Entities())
+            using (var db = new Session1Entities1())
             {
                 return (from s in db.Skills
                         select s.skillName).ToList();

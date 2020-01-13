@@ -39,7 +39,7 @@ namespace Session1
         }
         public async Task AddResource()
         {
-            using (var db = new Session1Entities()) {
+            using (var db = new Session1Entities1()) {
                 //need to add resource and RA entries.
                 int resourceid = 1;
                 try
@@ -156,7 +156,7 @@ namespace Session1
         }
         public async Task updateDatabase(int id)
         {
-            using(var db = new Session1Entities())
+            using(var db = new Session1Entities1())
             {
                 var res = (from r in db.Resources
                            where r.resId == id
@@ -259,7 +259,7 @@ namespace Session1
         }
         public async Task<List<string>> getTypes()
         {
-            using (var db = new Session1Entities())
+            using (var db = new Session1Entities1())
             {
                 return (from s in db.Resource_Type
                         select s.resTypeName).ToList();
