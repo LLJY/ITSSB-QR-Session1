@@ -16,7 +16,13 @@ namespace Session1
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Function called by login_button when clicked, handles login by:
+        /// 1. Querying Database for matching username and password and selecting record.
+        /// 2.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void login_button_Click(object sender, EventArgs e)
         {
             //check if fields are filled
@@ -28,6 +34,7 @@ namespace Session1
                                where u.userId == user_id_box.Text
                                where u.userPw == password_box.Text
                                select new { u,u.User_Type.userTypeId }).ToList();
+                    //if count of users in the list is not zero, user exists.
                     if (user.Count() > 0 && user.First().userTypeId == 2)
                     {
                         //username and password auth successful.

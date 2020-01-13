@@ -28,7 +28,11 @@ namespace Session1
             MM.Closed += (s, args) => this.Close();
             MM.Show();
         }
-
+        /// <summary>
+        /// Creates account and performs the necessary checks defined by the paper.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void create_button_Click(object sender, EventArgs e)
         {
             //first check if everything is filled in

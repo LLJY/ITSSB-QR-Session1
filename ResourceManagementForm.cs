@@ -17,6 +17,9 @@ namespace Session1
         {
             Initialize();
         }
+        /// <summary>
+        /// Initialize function to call functions asynchronously before InitializeComponent()
+        /// </summary>
         public async void Initialize()
         {
             var dbtask = GetResources();
@@ -28,11 +31,21 @@ namespace Session1
             //skillcombo.DataSource = await asynctask3;
             ReloadDGV();
         }
+        /// <summary>
+        /// Sets datagridview's Data Source as null and then the default list of objects to force a reload.
+        /// </summary>
         public async void ReloadDGV()
         {
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = dgvlist;
         }
+        /// <summary>
+        /// Get Resources from database to fill the default list, which will then be used to populate the datagridview.
+        /// </summary>
+        /// <param name="typefilter">
+        /// parameter to filter by type.
+        /// </param>
+        /// <returns></returns>
         public async Task<List<ResourceManagement>> GetResources(string typefilter = null)
         {
             var returnlist = new List<ResourceManagement>();
@@ -85,7 +98,7 @@ namespace Session1
             }
             return returnlist;
         }
-        public async Task<List<string>> getType()
+        public async Task<List<string>> GetType()
         {
             using(var db = new Session1Entities1())
             {
@@ -93,7 +106,7 @@ namespace Session1
                         select s.resTypeName).ToList();
             }
         }
-        public async Task<List<string>> getSkills()
+        public async Task<List<string>> GetSkills()
         {
             using (var db = new Session1Entities1())
             {

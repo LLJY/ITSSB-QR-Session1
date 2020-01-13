@@ -13,6 +13,11 @@ namespace Session1
     public partial class CrudResource : Form
     {
         bool Update;
+        /// <summary>
+        /// Form for CRUD operations on resources.
+        /// </summary>
+        /// <param name="isUpdate"></param>
+        /// <param name="id"></param>
         public CrudResource(bool isUpdate, int id = 0)
         {
             Update = isUpdate;
@@ -37,6 +42,10 @@ namespace Session1
             RMF.Closed += (s, args) => this.Close();
             RMF.Show();
         }
+        /// <summary>
+        /// Adds a new resource and its allocation, depending on if the checkbox for the different skills are checked.
+        /// </summary>
+        /// <returns></returns>
         public async Task AddResource()
         {
             using (var db = new Session1Entities1()) {
@@ -60,8 +69,10 @@ namespace Session1
                 db.Resources.Add(resource);
                 if (CS.Checked)
                 {
+                    //try catch because it might error if there are no results found(database does not contain any values by default)
                     try
                     {
+                        //try getting the largest id +1 as entity framework does not support auto incrementing.
                         var ra = new Resource_Allocation()
                         {
                             allocId = (from x in db.Resource_Allocation orderby x.allocId descending select x.allocId).First() + 1,
@@ -154,6 +165,11 @@ namespace Session1
                 await db.SaveChangesAsync();
             }
         }
+        /// <summary>
+        /// Incomplete update function.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task updateDatabase(int id)
         {
             using(var db = new Session1Entities1())
@@ -265,7 +281,11 @@ namespace Session1
                         select s.resTypeName).ToList();
             }
         }
-
+        /// <summary>
+        /// done_button calls the method to add resources
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void done_button_Click(object sender, EventArgs e)
         {
             if (!Update)
