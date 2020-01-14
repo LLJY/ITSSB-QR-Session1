@@ -68,10 +68,6 @@ namespace Session1
                                 form.Show();
                                 MessageBox.Show("Added User!");
                             }
-                            else
-                            {
-                                MessageBox.Show("UserID must be 8 characters or more!!");
-                            }
                         }
                         else
                         {
