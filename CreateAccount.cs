@@ -62,6 +62,10 @@ namespace Session1
                                 };
                                 db.Users.Add(user);
                                 await db.SaveChangesAsync();
+                                this.Hide();
+                                var form = new LoginPage();
+                                form.Closed += (s, args) => this.Close();
+                                form.Show();
                                 MessageBox.Show("Added User!");
                             }
                             else
