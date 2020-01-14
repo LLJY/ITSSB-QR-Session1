@@ -163,6 +163,8 @@ namespace Session1
                     }
                 }
                 await db.SaveChangesAsync();
+                MessageBox.Show("Done!");
+                back_button_Click(null, null);
             }
         }
         /// <summary>
