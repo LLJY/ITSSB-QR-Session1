@@ -23,7 +23,7 @@ namespace Session1
         public async void Initialize()
         {
             var dbtask = GetResources();
-            var asyctask2 = getSkills();
+            var asyctask2 = GetSkills();
             var asynctask3 = GetType();
             InitializeComponent();
             dgvlist = await dbtask;
