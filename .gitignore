@@ -31,8 +31,10 @@ x86/
 [Aa][Rr][Mm]64/
 bld/
 [Bb]in/
-[Bb]in/[Dd]ebug
+[Bb]in/[Dd]ebug/
 [Oo]bj/
+[Oo]bj/[Dd]ebug/
+[Oo]bj/[Dd]ebug
 [Ll]og/
 [Ll]ogs/
 
