@@ -210,7 +210,7 @@ namespace Session1
                         {
                             allocId = (from x in db.Resource_Allocation orderby x.allocId descending select x.allocId).First() + 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 2
                         };
                         db.Resource_Allocation.Add(ra);
                     }
@@ -220,7 +220,7 @@ namespace Session1
                         {
                             allocId = 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 2
                         };
                         db.Resource_Allocation.Add(ra);
                     }
@@ -233,7 +233,7 @@ namespace Session1
                         {
                             allocId = (from x in db.Resource_Allocation orderby x.allocId descending select x.allocId).First() + 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 3
                         };
                         db.Resource_Allocation.Add(ra);
                     }
@@ -243,7 +243,7 @@ namespace Session1
                         {
                             allocId = 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 3
                         };
                         db.Resource_Allocation.Add(ra);
                     }
@@ -256,7 +256,7 @@ namespace Session1
                         {
                             allocId = (from x in db.Resource_Allocation orderby x.allocId descending select x.allocId).First() + 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 4
                         };
                         db.Resource_Allocation.Add(ra);
                     }
@@ -266,7 +266,7 @@ namespace Session1
                         {
                             allocId = 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 4
                         };
                         db.Resource_Allocation.Add(ra);
                     }
