@@ -64,6 +64,10 @@ namespace Session1
                                 await db.SaveChangesAsync();
                                 MessageBox.Show("Added User!");
                             }
+                            else
+                            {
+                                MessageBox.Show("UserID must be 8 characters or more!!");
+                            }
                         }
                         else
                         {
