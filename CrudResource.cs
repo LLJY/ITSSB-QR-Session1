@@ -168,10 +168,11 @@ namespace Session1
             }
         }
         /// <summary>
-        /// Incomplete update function.
+        /// Update function, tries to update and check if the resource allocation already exists for the specific resource and will update, add and delete accordingly.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// 
         public async Task updateDatabase(int id)
         {
             using(var db = new Session1Entities1())
@@ -179,8 +180,11 @@ namespace Session1
                 var res = (from r in db.Resources
                            where r.resId == id
                            select r).First();
+                var ras = (from ra in db.Resource_Allocation
+                           where ra.resIdFK == id
+                           select ra.skillIdFK).ToList();
                 res.remainingQuantity = (int)numericUpDown1.Value;
-                if (CS.Checked)
+                if (CS.Checked && !ras.Contains(1))
                 {
                     try
                     {
@@ -204,7 +208,23 @@ namespace Session1
                     }
 
                 }
-                if (SSB.Checked)
+                else if (!CS.Checked && ras.Contains(1))
+                {
+                    //sometimes .First() can return an error, hence put it in a try catch
+                    try
+                    {
+                        var findra = (from a in db.Resource_Allocation
+                                      where a.skillIdFK == 1
+                                      where a.resIdFK == id
+                                      select a).First();
+                        db.Resource_Allocation.Remove(findra);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                if (SSB.Checked && !ras.Contains(2))
                 {
                     try
                     {
@@ -212,7 +232,7 @@ namespace Session1
                         {
                             allocId = (from x in db.Resource_Allocation orderby x.allocId descending select x.allocId).First() + 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 2
                         };
                         db.Resource_Allocation.Add(ra);
                     }
@@ -222,12 +242,28 @@ namespace Session1
                         {
                             allocId = 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 2
                         };
                         db.Resource_Allocation.Add(ra);
                     }
                 }
-                if (NSA.Checked)
+                else if (!SSB.Checked && ras.Contains(2))
+                {
+                    //sometimes .First() can return an error, hence put it in a try catch
+                    try
+                    {
+                        var findra = (from a in db.Resource_Allocation
+                                      where a.skillIdFK == 2
+                                      where a.resIdFK == id
+                                      select a).First();
+                        db.Resource_Allocation.Remove(findra);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                if (NSA.Checked && !ras.Contains(3))
                 {
                     try
                     {
@@ -235,7 +271,7 @@ namespace Session1
                         {
                             allocId = (from x in db.Resource_Allocation orderby x.allocId descending select x.allocId).First() + 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 3
                         };
                         db.Resource_Allocation.Add(ra);
                     }
@@ -245,12 +281,28 @@ namespace Session1
                         {
                             allocId = 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 3
                         };
                         db.Resource_Allocation.Add(ra);
                     }
                 }
-                if (WT.Checked)
+                else if (!NSA.Checked && ras.Contains(3))
+                {
+                    //sometimes .First() can return an error, hence put it in a try catch
+                    try
+                    {
+                        var findra = (from a in db.Resource_Allocation
+                                      where a.skillIdFK == 3
+                                      where a.resIdFK == id
+                                      select a).First();
+                        db.Resource_Allocation.Remove(findra);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                if (WT.Checked && !ras.Contains(4))
                 {
                     try
                     {
@@ -258,7 +310,7 @@ namespace Session1
                         {
                             allocId = (from x in db.Resource_Allocation orderby x.allocId descending select x.allocId).First() + 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 4
                         };
                         db.Resource_Allocation.Add(ra);
                     }
@@ -268,11 +320,29 @@ namespace Session1
                         {
                             allocId = 1,
                             resIdFK = res.resId,
-                            skillIdFK = 1
+                            skillIdFK = 4
                         };
                         db.Resource_Allocation.Add(ra);
                     }
                 }
+                else if (!WT.Checked && ras.Contains(4))
+                {
+                    //sometimes .First() can return an error, hence put it in a try catch
+                    try
+                    {
+                        var findra = (from a in db.Resource_Allocation
+                                      where a.skillIdFK == 4
+                                      where a.resIdFK == id
+                                      select a).First();
+                        db.Resource_Allocation.Remove(findra);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                await db.SaveChangesAsync();
+                MessageBox.Show("Done");
             }
         }
         public async Task<List<string>> getTypes()
