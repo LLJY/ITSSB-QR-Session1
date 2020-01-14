@@ -13,6 +13,7 @@ namespace Session1
     public partial class CrudResource : Form
     {
         bool Update;
+        int UpdateID;
         /// <summary>
         /// Form for CRUD operations on resources.
         /// </summary>
@@ -21,6 +22,7 @@ namespace Session1
         public CrudResource(bool isUpdate, int id = 0)
         {
             Update = isUpdate;
+            UpdateID = id;
             Initialize();
         }
         public async void Initialize()

@@ -36,6 +36,16 @@ namespace Session1
             type_combo.SelectedItem = "None";
             skillcombo.SelectedItem = "None";
         }
+        public void colorDGV()
+        {
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (dataGridView1.Rows[i].Cells[4].Value.ToString().Equals("Not Available"))
+                {
+                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                }
+            }
+        }
         /// <summary>
         /// Sets datagridview's Data Source as null and then the default list of objects to force a reload.
         /// Also calls the get resources function.
@@ -66,13 +76,7 @@ namespace Session1
                 dataGridView1.DataSource = null;
                 dgvlist = await asynctask;
                 dataGridView1.DataSource = dgvlist;
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    if (dataGridView1.Rows[i].Cells[4].Value.ToString() == "Not Available")
-                    {
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
-                    }
-                }
+                
             }
             catch
             {
@@ -202,7 +206,7 @@ namespace Session1
         private void update_button_Click(object sender, EventArgs e)
         {
             this.Hide();
-            var CR = new CrudResource(true);
+            var CR = new CrudResource(true, int.Parse(dataGridView1.SelectedRows[0].Cells[0].Value.ToString()));
             CR.Closed += (s, args) => this.Close();
             CR.Show();
         }
@@ -213,6 +217,16 @@ namespace Session1
             var LP = new LoginPage();
             LP.Closed += (s, args) => this.Close();
             LP.Show();
+        }
+
+        private void DataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            colorDGV();
+        }
+
+        private void Type_combo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ReloadDGV();
         }
     }
 }
