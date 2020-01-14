@@ -34,6 +34,7 @@ namespace Session1
             {
                 resname_box.Enabled = false;
                 restype_combo.Enabled = false;
+                await UpdateUI(UpdateID);
             }
         }
 
@@ -347,6 +348,40 @@ namespace Session1
                 MessageBox.Show("Done");
             }
         }
+        public async Task UpdateUI(int id)
+        {
+            using(var db = new Session1Entities1())
+            {
+                var res = (from r in db.Resources
+                           where r.resId == id
+                           select r).First();
+                resname_box.Text = res.resName;
+                restype_combo.Text = res.Resource_Type.resTypeName;
+                var alloc = (from a in db.Resource_Allocation
+                             where a.resIdFK == id
+                             select a).ToList();
+                numericUpDown1.Value = res.remainingQuantity;
+                foreach (var item in alloc)
+                {
+                    if(item.skillIdFK == 1)
+                    {
+                        CS.Checked = true;
+                    }
+                    else if (item.skillIdFK == 2)
+                    {
+                        SSB.Checked = true;
+                    }
+                    else if (item.skillIdFK == 3)
+                    {
+                        NSA.Checked = true;
+                    }
+                    else if (item.skillIdFK == 4)
+                    {
+                        WT.Checked = true;
+                    }
+                }
+            }
+        }
         public async Task<List<string>> getTypes()
         {
             using (var db = new Session1Entities1())
@@ -373,6 +408,10 @@ namespace Session1
                 {
                     MessageBox.Show("One or more fields are empty!");
                 }
+            }
+            else
+            {
+                await updateDatabase(UpdateID);
             }
         }
     }
