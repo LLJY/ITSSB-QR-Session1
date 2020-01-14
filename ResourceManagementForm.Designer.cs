@@ -174,7 +174,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox skillcombo;
-        private System.Windows.Forms.ComboBox type_combo
+        private System.Windows.Forms.ComboBox type_combo;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button update_button;
