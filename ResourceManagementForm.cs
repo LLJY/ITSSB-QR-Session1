@@ -27,17 +27,57 @@ namespace Session1
             var asynctask3 = GetType();
             InitializeComponent();
             dgvlist = await dbtask;
-            type_combo.DataSource = await asynctask2;
-            skillcombo.DataSource = await asynctask3;
-            ReloadDGV();
+            var ds2 = await asynctask2;
+            var ds1 = await asynctask3;
+            ds1.Add("None");
+            ds2.Add("None");
+            type_combo.DataSource = ds1;
+            skillcombo.DataSource = ds2;
+            type_combo.SelectedItem = "None";
+            skillcombo.SelectedItem = "None";
         }
         /// <summary>
         /// Sets datagridview's Data Source as null and then the default list of objects to force a reload.
+        /// Also calls the get resources function.
         /// </summary>
         public async void ReloadDGV()
         {
-            dataGridView1.DataSource = null;
-            dataGridView1.DataSource = dgvlist;
+            string skill;
+            string type;
+            try
+            {
+                if (skillcombo.SelectedItem.ToString() == "None")
+                {
+                    skill = null;
+                }
+                else
+                {
+                    skill = skillcombo.SelectedItem.ToString();
+                }
+                if (type_combo.SelectedItem.ToString() == "None")
+                {
+                    type = null;
+                }
+                else
+                {
+                    type = type_combo.SelectedItem.ToString();
+                }
+                var asynctask = GetResources(type, skill);
+                dataGridView1.DataSource = null;
+                dgvlist = await asynctask;
+                dataGridView1.DataSource = dgvlist;
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                {
+                    if (dataGridView1.Rows[i].Cells[4].Value.ToString() == "Not Available")
+                    {
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                    }
+                }
+            }
+            catch
+            {
+
+            }
         }
         /// <summary>
         /// Get Resources from database to fill the default list, which will then be used to populate the datagridview.
@@ -46,14 +86,14 @@ namespace Session1
         /// parameter to filter by type.
         /// </param>
         /// <returns></returns>
-        public async Task<List<ResourceManagement>> GetResources(string typefilter = null)
+        public async Task<List<ResourceManagement>> GetResources(string typefilter = null, string skillfilter = null)
         {
             var returnlist = new List<ResourceManagement>();
             using (var db = new Session1Entities1())
             {
                 var resources = (from r in db.Resources
                                  join rt in db.Resource_Type on r.resTypeIdFK equals rt.resTypeId
-                                 select new { r, rt }).ToList();
+                                 select new { r, rt}).ToList();
                 if (typefilter != null)
                 {
                     resources = (from r in resources
@@ -84,16 +124,35 @@ namespace Session1
                     {
                         quantity = "Low Stock";
                     }
-                    returnlist.Add(
-                        new ResourceManagement()
+                    if (skillfilter != null)
+                    {
+                        if (skills.Contains(skillfilter))
                         {
-                            ID = item.r.resId,
-                            Name = item.r.resName,
-                            Type = item.rt.resTypeName,
-                            NoSkills = noSkills,
-                            AllocatedSkills = allc,
-                            AvailableQuantity = quantity
-                        });
+                            returnlist.Add(
+                                new ResourceManagement()
+                                {
+                                    ID = item.r.resId,
+                                    Name = item.r.resName,
+                                    Type = item.rt.resTypeName,
+                                    NoSkills = noSkills,
+                                    AllocatedSkills = allc,
+                                    AvailableQuantity = quantity
+                                });
+                        }
+                    }
+                    else
+                    {
+                        returnlist.Add(
+                               new ResourceManagement()
+                               {
+                                   ID = item.r.resId,
+                                   Name = item.r.resName,
+                                   Type = item.rt.resTypeName,
+                                   NoSkills = noSkills,
+                                   AllocatedSkills = allc,
+                                   AvailableQuantity = quantity
+                               });
+                    }
                 }
             }
             return returnlist;
@@ -116,7 +175,11 @@ namespace Session1
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            ReloadDGV();
+        }
+        private void Skillcombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ReloadDGV();
         }
         public class ResourceManagement
         {
