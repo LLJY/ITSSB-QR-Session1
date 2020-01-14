@@ -23,12 +23,12 @@ namespace Session1
         public async void Initialize()
         {
             var dbtask = GetResources();
-            var asyctask2 = GetSkills();
+            var asynctask2 = GetSkills();
             var asynctask3 = GetType();
             InitializeComponent();
             dgvlist = await dbtask;
-            //typecombo.DataSource = await asyctask2;
-            //skillcombo.DataSource = await asynctask3;
+            type_combo.DataSource = await asynctask2;
+            skillcombo.DataSource = await asynctask3;
             ReloadDGV();
         }
         /// <summary>
