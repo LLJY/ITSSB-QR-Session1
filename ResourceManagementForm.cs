@@ -228,5 +228,28 @@ namespace Session1
         {
             ReloadDGV();
         }
+
+        private async void Button2_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This action cannot be undone!", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes){
+                using (var db = new Session1Entities1())
+                {
+                    var selectedid = int.Parse(dataGridView1.Rows[0].Cells[0].Value.ToString());
+                    var s = (from a in db.Resources
+                             where a.resId == selectedid
+                             select a).First();
+                    var allocs = (from a in db.Resource_Allocation
+                                  where a.resIdFK == selectedid
+                                  select a).ToList();
+                    db.Resources.Remove(s);
+                    foreach (var item in allocs)
+                    {
+                        db.Resource_Allocation.Remove(item);
+                    }
+                    await db.SaveChangesAsync();
+                }
+                ReloadDGV();
+            }
+        }
     }
 }
